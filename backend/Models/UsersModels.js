@@ -56,7 +56,10 @@ const UsersSchema = new mongoose.Schema({
     dob: {
         type: Date,
         required: true
-    }
+    },
+    googleId: {
+        type: String,
+      },
 })
 
 UsersSchema.pre('save', async function(next){

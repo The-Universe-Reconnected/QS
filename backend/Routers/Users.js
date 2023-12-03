@@ -130,5 +130,33 @@ router.get('/api/users/logout', userAuth, async (req, res, next) => {
     }
 })
 
+outer.post('/api/users/google-signup', async (req, res, next) => {
+    try {
+      const ticket = await googleClient.verifyIdToken({
+        idToken: req.body.tokenId,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+  
+      const { name, email, sub: googleId } = ticket.getPayload();
+      const existingUser = await UsersModels.findOne({ email });
+  
+      if (existingUser) {
+        return res.status(400).send({ error: 'User with this email already exists' });
+      }
+  
+      const user = new UsersModels({
+        name,
+        email,
+        googleId,
+      });
+  
+      await user.save();
+  
+      res.status(201).send({ result: 'Google User Created Successfully!' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: 'Server Error' });
+    }
+  });
 
 export default router;

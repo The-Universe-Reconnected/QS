@@ -16,6 +16,23 @@ export default function Register() {
     const [gender, setGender] = useState(() => '')
     const [isBtnDisabled, setIsBtnDisabled] = useState(() => false)
     const navigate = useNavigate();
+
+    const handleGoogleSignUp = async () => {
+        // Handle Google Sign-up logic here
+        try {
+          const googleResponse = await // Make a request to your backend for Google Sign-up
+          axios.post(`${backend_url}/api/users/google-signup`, {
+            // Pass any necessary data
+          });
+    
+          // Handle success (optional)
+          console.log('Google Sign-up successful:', googleResponse.data);
+        } catch (error) {
+          // Handle error (optional)
+          console.error('Google Sign-up error:', error);
+        }
+      };
+      
     const handleSubmit = async (e) => {
         e.preventDefault();
         const errorList = {...error}
@@ -180,7 +197,7 @@ export default function Register() {
                     </div>
 
                     <div>
-                        <button className="google-register-button" disabled={isBtnDisabled}>
+                        <button className="google-register-button" onClick={handleGoogleSignUp} disabled={isBtnDisabled}>
                         <img src={googleImg} alt="Google Icon" className="google-icon" />
                         REGISTER WITH GOOGLE
                         </button>
